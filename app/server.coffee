@@ -6,6 +6,15 @@ util           = require 'util'
 fs             = require 'fs'
 GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
+# express middleware
+# see https://github.com/senchalabs/connect#middleware
+# see https://github.com/strongloop/express/wiki/Migrating-from-3.x-to-4.x
+morgan         = require 'morgan' # morgan is logger for express 4.x
+cookieParser   = require 'cookie-parser'
+bodyParser     = require 'body-parser'
+methodOverride = require 'method-override'
+session        = require 'express-session'
+
 config = {}
 
 loadConfig = ->
@@ -16,7 +25,7 @@ loadConfig = ->
       deferred.reject err
     deferred.resolve JSON.parse(data)
   deferred.promise
-  
+
 ensureAuthenticated = (req, res, next) ->
   return next() if (req.isAuthenticated())
   res.redirect '/login'
@@ -26,18 +35,20 @@ passport.deserializeUser (obj, done) -> done(null, obj)
 
 app = express()
 
-app.configure ->
-  app.set('views', __dirname + '/views')
-  app.set('view engine', 'ejs') # note: we'll change this to haml
-  app.use(express.logger())
-  app.use(express.cookieParser())
-  app.use(express.bodyParser())
-  app.use(express.methodOverride())
-  app.use(express.session({ secret: 'dyrsN4oFWFAff0e2Zroa+7364KHxp+oEL9PcY831IUA=' })) # use your own random value
-  app.use(passport.initialize())
-  app.use(passport.session())
-  app.use(app.router)
-  app.use(express.static(__dirname + '/public'))
+app.set('views', __dirname + '/views')
+app.set('view engine', 'ejs') # note: we'll change this to haml
+
+app.use(morgan('combined')) # morgan is logger for express 4.x
+app.use(cookieParser())
+# parse application/json
+app.use(bodyParser.json())
+app.use(methodOverride())
+
+app.use(session({ resave:'true', saveUninitialized:'true', secret: 'dyrsN4oFWFAff0e2Zroa+7364KHxp+oEL9PcY831IUA=' }))
+app.use(passport.initialize())
+app.use(passport.session())
+# app.use(app.router) --> deprecated
+app.use(express.static(__dirname + '/public'))
 
 app.get '/', (req, res) ->
   res.render('index', { user: req.user })
@@ -54,7 +65,7 @@ app.get '/auth/google',
   }
   , (req, res) -> null
 
-app.get '/auth/google/callback', 
+app.get '/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) -> res.redirect '/'
 
@@ -74,5 +85,5 @@ loadConfig().then (cfg) ->
       process.nextTick -> done(null, profile)
     )
 
-  console.log 'listening on port 3000', config  
+  console.log 'listening on port 3000', config
   app.listen(3000)
