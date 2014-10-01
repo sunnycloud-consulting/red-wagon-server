@@ -1,1 +1,6 @@
 README coming soon
+
+* go to Google and get an Oauth2 client id/secret
+* edit the conf/conf.js file with those values
+* run the app with `coffee app/server.coffee`
+
