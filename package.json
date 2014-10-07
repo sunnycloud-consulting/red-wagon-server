@@ -1,0 +1,43 @@
+{
+  "name": "red-wagon-server",
+  "version": "0.0.0",
+  "description": "README coming soon",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.9.0",
+    "consolidate": "^0.10.0",
+    "cookie-parser": "^1.3.3",
+    "ejs": "^1.0.0",
+    "express": "^4.9.5",
+    "express-session": "^1.8.2",
+    "express-vhost-manager": "^0.0.4",
+    "fs": "^0.0.2",
+    "hamljs": "^0.6.2",
+    "method-override": "^2.2.0",
+    "morgan": "^1.3.2",
+    "passport": "^0.2.1",
+    "passport-facebook": "^1.0.3",
+    "passport-github": "^0.1.5",
+    "passport-google-oauth": "^0.1.5",
+    "passport-linkedin": "^0.1.3",
+    "passport-stackexchange": "^0.1.0",
+    "passport-twitter": "^1.0.2",
+    "q": "^1.0.1",
+    "underscore": "^1.7.0",
+    "util": "^0.10.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": ""
+}
