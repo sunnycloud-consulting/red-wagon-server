@@ -1,0 +1,6 @@
+- if (!user)
+  %h2 Welcome to Redwagon
+  %h2 You need to login
+  %a{href: '/login'} Click Me
+- else
+  %h2 Welcome! #{user.displayName}
